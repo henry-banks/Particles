@@ -17,7 +17,7 @@ inline vec2 lerp(const vec2 &s, const vec2 &e, float t)
 union color
 {
 	unsigned ui_color;
-	struct { char r, g, b, a; };
+	struct {unsigned char a, r, g, b; };
 };
 //Each byte corresponds to 1 hex color
 
