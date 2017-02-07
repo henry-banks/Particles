@@ -1,5 +1,6 @@
 #include "sfwdraw.h"
 #include "math.h"
+#include "Particle.h"
 
 using namespace sfw;
 
@@ -7,23 +8,29 @@ void main()
 {
 	sfw::initContext();
 
-	unsigned sprite = sfw::loadTextureMap("../res/particle_sprite.png");
+	unsigned sprite = sfw::loadTextureMap("../res/radial_gradient.png");
 	float angle = 0.f;
 
-	color startCol, endCol;
-
-	startCol.ui_color = MAGENTA;
-	endCol.ui_color = CYAN;
-	float timer = 0;
+	particle part;
+	part.sprite = sprite;
+	part.pos = vec2{ 400,300 };
+	part.vel = randDir(0,360) * lerp(20,80, rand01());
+	part.sDim = randRange(vec2{ 8,8 }, vec2{ 32,32 });
+	part.eDim = randRange(vec2{ 256,256 }, vec2{ 512,512 });
+	part.sColor.ui_color = GREEN;
+	part.eColor.ui_color = BLUE;
+	part.lifespan = 6.f;
+	part.lifetime = 0;
 
 	while (sfw::stepContext())
 	{
-		timer += sfw::getDeltaTime();
-
-		color curCol = lerp(startCol, endCol, timer / 10.f);
-
-		sfw::drawTexture(sprite, 400, 300, 100, 100, angle, true, 0, curCol.ui_color);
-		angle += sfw::getDeltaTime() * 10;
+		float dt = sfw::getDeltaTime();
+		if (!part.refresh(dt))
+		{
+			part.pos = vec2{ 400,0 };
+			part.vel = vec2{ 0,20 };
+			part.lifetime = 0;
+		}
 	}
 
 	sfw::termContext();
