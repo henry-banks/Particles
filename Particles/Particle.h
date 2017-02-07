@@ -6,6 +6,8 @@ using namespace sfw;
 
 struct particle
 {
+	particle() : lifespan(-1), lifetime(0) {}
+
 	unsigned sprite;
 	vec2 pos, vel;
 	//Start/End dimensions

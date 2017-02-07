@@ -12,19 +12,7 @@ class ParticleEmitter
 	float emitRateLow, emitRateHigh;
 	float emissionTimer;
 
-	//Defaults
-	vec2 pos;							//THE POSITION
-	unsigned sprite;					//THE SPRITE
-	float angLow, angHigh;				//direction
-	float speedLow, speedHigh;			//speed = velocity
-	vec2 dimLowStart, dimHighStart;		//range of starting dimensions
-	vec2 dimLowEnd, dimHighEnd;			//range of ending dimensions
-	color colLowStart, colHighStart;	//start color range
-	color colLowEnd, colHighEnd;		//end color range
-	float lifespawnLow, lifespanHigh;	//lifespan range
-
-	//////////////////////////////////////
-
+	/////////////////////////////////////////////////////////
 	particle _generate()
 	{
 		particle part;
@@ -47,8 +35,32 @@ class ParticleEmitter
 
 	void emit()
 	{
-
+		for (int i = 0; i < PART_SIZE; i++)
+		{
+			if (!particles[i].isActive())
+			{
+				particles[i] = _generate();
+				return;
+			}
+		}
 	}
+
+	/////////////////////////////////////////////////////////
+
+public:
+	
+	//Defaults
+	vec2 pos;							//THE POSITION
+	unsigned sprite;					//THE SPRITE
+	float angLow, angHigh;				//direction
+	float speedLow, speedHigh;			//speed = velocity
+	vec2 dimLowStart, dimHighStart;		//range of starting dimensions
+	vec2 dimLowEnd, dimHighEnd;			//range of ending dimensions
+	color colLowStart, colHighStart;	//start color range
+	color colLowEnd, colHighEnd;		//end color range
+	float lifespawnLow, lifespanHigh;	//lifespan range
+
+	//////////////////////////////////////
 
 	void update (float dt)
 	{
