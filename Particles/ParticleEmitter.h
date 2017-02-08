@@ -8,11 +8,21 @@ using namespace std;
 class ParticleEmitter
 {
 	particle particles[PART_SIZE];
-
-	float emitRateLow, emitRateHigh;
 	float emissionTimer;
 
 	/////////////////////////////////////////////////////////
+	void emit()
+	{
+		for (int i = 0; i < PART_SIZE; i++)
+		{
+			if (!particles[i].isActive())
+			{
+				particles[i] = _generate();
+				return;
+			}
+		}
+	}
+
 	particle _generate()
 	{
 		particle part;
@@ -33,22 +43,15 @@ class ParticleEmitter
 		return part;
 	}
 
-	void emit()
-	{
-		for (int i = 0; i < PART_SIZE; i++)
-		{
-			if (!particles[i].isActive())
-			{
-				particles[i] = _generate();
-				return;
-			}
-		}
-	}
-
 	/////////////////////////////////////////////////////////
 
 public:
-	
+
+	ParticleEmitter() : emissionTimer(0) {}
+
+	//Emissions
+	float emitRateLow, emitRateHigh;
+
 	//Defaults
 	vec2 pos;							//THE POSITION
 	unsigned sprite;					//THE SPRITE
@@ -62,25 +65,19 @@ public:
 
 	//////////////////////////////////////
 
-	void update (float dt)
+	void update(float dt)
 	{
-		for (int i = 0; i < PART_SIZE; i++)
+		for (int i = 0; i < PART_SIZE; ++i)
 		{
 			if (particles[i].isActive())
 				particles[i].refresh(dt);
+		}
 
-			emissionTimer -= dt;
-			if (emissionTimer < 0)
-			{
-				do
-				{
-					emit();
-				}
-				while(emissionTimer += lerp(emitRateHigh, emitRateLow, rand01()) < 0);
-				//^ set emission timer to a random value within high rate and low rate
-
-
-			}
+		emissionTimer -= dt;
+		while (emissionTimer < 0)
+		{
+			emit();
+			emissionTimer += lerp(emitRateLow, emitRateHigh, rand01());
 		}
 	}
 };

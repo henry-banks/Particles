@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math.h" />
+    <ClInclude Include="ObjPool.h" />
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="Particle.h" />
   </ItemGroup>

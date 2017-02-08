@@ -25,7 +25,7 @@ inline vec2 operator*(const vec2 &a, const vec2 &b)
 { return vec2{ a.x*b.x, a.y*b.y }; }
 
 inline vec2 lerp(const vec2 &s, const vec2 &e, float t)
-{ return s*(t - 1) + e*t; }
+{ return s*(1 - t) + e*t; }
 
 inline vec2 randRange(const vec2 &a, const vec2 &b)
 {
