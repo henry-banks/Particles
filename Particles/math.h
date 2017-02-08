@@ -18,6 +18,8 @@ inline vec2 operator+(const vec2 &a, const vec2 &b)
 
 inline vec2 operator-(const vec2 &a, const vec2 &b)
 { return vec2{ a.x - b.x, a.y - b.y }; }
+inline vec2 operator-(const vec2 &a, float b)
+{ return vec2{ a.x-b, a.y-b }; }
 
 inline vec2 operator*(const vec2 &a, float b)
 { return vec2{ a.x*b, a.y*b }; }
@@ -38,6 +40,12 @@ inline vec2 randDir(float min_deg, float max_deg)
 	float rad = DEG2RAD * deg;
 
 	return vec2{ cos(rad), sin(rad) };
+}
+
+inline vec2 normal(const vec2 &a)
+{
+	float d = sqrt(a.x*a.x + a.y*a.y);
+	return vec2{ a.x / d, a.y / d };
 }
 
 //////////////////////////////////////////////////////////

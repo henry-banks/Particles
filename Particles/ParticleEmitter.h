@@ -1,26 +1,27 @@
 #pragma once
 #include "Particle.h"
-#include <vector>
+#include "ObjPool.h"
 
 using namespace std;
-#define PART_SIZE 24
+#define PART_SIZE 10000
 
 class ParticleEmitter
 {
-	particle particles[PART_SIZE];
+	ObjectPool<particle> particles;
 	float emissionTimer;
 
 	/////////////////////////////////////////////////////////
 	void emit()
 	{
-		for (int i = 0; i < PART_SIZE; i++)
+		/*for (int i = 0; i < PART_SIZE; i++)
 		{
 			if (!particles[i].isActive())
 			{
 				particles[i] = _generate();
 				return;
 			}
-		}
+		}*/
+		particles.push(_generate());
 	}
 
 	particle _generate()
@@ -47,7 +48,7 @@ class ParticleEmitter
 
 public:
 
-	ParticleEmitter() : emissionTimer(0) {}
+	ParticleEmitter() : emissionTimer(0), particles(PART_SIZE) {}
 
 	//Emissions
 	float emitRateLow, emitRateHigh;
@@ -67,10 +68,18 @@ public:
 
 	void update(float dt)
 	{
-		for (int i = 0; i < PART_SIZE; ++i)
+		/*for (int i = 0; i < PART_SIZE; ++i)
 		{
 			if (particles[i].isActive())
 				particles[i].refresh(dt);
+		}*/
+
+		for (auto it = particles.begin(); it != particles.end(); )
+		{
+			it->refresh(dt);
+
+			if (it->isActive()) it++;
+			else it.free();	//similar to ++
 		}
 
 		emissionTimer -= dt;
